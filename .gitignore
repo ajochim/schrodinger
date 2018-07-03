@@ -1,2 +1,5 @@
 .spyderproject
 __pycache__
+potential.dat
+pylintrc
+schrodinger.inp
