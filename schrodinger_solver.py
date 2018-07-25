@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """"""
 import numpy as np
-from scipy.sparse import spdiags
 from scipy.linalg import eigh_tridiagonal
 from scipy.interpolate import interp1d
+from scipy import integrate
 import matplotlib.pyplot as plt
 
 # Read given parameters of "schrodinger.inp":
@@ -80,35 +80,55 @@ else:
 InterpPot = np.hstack((xinterp.reshape((-1, 1)), yinterp.reshape((-1, 1))))
 np.savetxt("potential.dat", InterpPot)
 
-# Plot comparisation of the potentials:
-plt.plot(xinterp, yinterp, "b-", label="interp. Potential")
-plt.plot(xPot, yPot, "ro", label="given Points")
-plt.xlim([xMin - 1, xMax + 1])
-# plt.ylim([-1.5,1.5])
-plt.xlabel("$x$ [Bohr]")
-plt.ylabel("Energy $E$ [Hartree]")
-plt.title("Comparisation")
-plt.legend()
-# plt.show()
-
 # create matrix to calculate eigenvalues and eigenvectors:
 delta = abs(xinterp[1]-xinterp[0])
 print("\nlength of xinterp:\n", len(xinterp), "\n\nobtained delta:\n", delta)
 a = 1/(mass*(delta)**2)
-ludiag = np.zeros(nPoint)
+ludiag = np.zeros(nPoint - 1)
 ludiag[:] = (-a)/2
-# print("\nlower and upper diagonal:\n", ludiag)
+print("\nlower and upper diagonal:\n", ludiag)
 mainDiag = np.zeros(nPoint)
 
 for jj in range(0, nPoint):
     mainDiag[jj] = a + yinterp[jj]
 
-diags = np.array([0, -1, 1])
-maDiags = np.array([mainDiag, ludiag, ludiag])
-ma = spdiags(maDiags, diags, nPoint, nPoint).toarray()
-# print("\ntridiagonal matrix ma:\n", ma)
+print("\nmainDiag\n", mainDiag)
+#diags = np.array([0, -1, 1])
+#maDiags = np.array([mainDiag, ludiag, ludiag])
+#ma = spdiags(maDiags, diags, nPoint, nPoint).toarray()
+#print("\ntridiagonal matrix ma:\n", ma)
 
 # eigenvalues in ascending (aufsteigend) order, the normalized eigenvector
 # corresponding to the eigenvalue eiva[i] is the column eive[:,i]
-eiva, eive = eigh_tridiagonal(mainDiag, ludiag, select='a', select_range='firstEigv, lastEigv')
-print("\neigenvalues:\n", eiva, "\neigenvectors\n:", eive)
+eiva, eive = eigh_tridiagonal(mainDiag, ludiag, select='a', select_range=None)
+print("\neigenvalues\n", eiva, "\n\neigenvectors\n", eive)
+
+# calculate squared probability density:
+probDensity = np.square(np.absolute(eive))
+
+# calculate normalized wavefunctions:
+normFactors = np.zeros(nPoint)
+eiveNorm = np.zeros((nPoint, nPoint))
+probDensityNorm = np.zeros((nPoint, nPoint))
+for ii in range(0, nPoint):
+    normFactors[ii] = np.trapz(probDensity[:,ii], xinterp)
+print("\nnormFactors\n", normFactors)
+for jj in range(0, nPoint):
+    eiveNorm[:,jj] = eive[:,jj] / np.sqrt(normFactors[jj])
+    probDensityNorm[:,jj] = probDensity[:,jj] / normFactors[jj]
+print("\nnormalized density should be 1\n", np.trapz(probDensityNorm[:,1], xinterp))
+print("\nnormalized integrals should be 1\n", np.trapz(eiveNorm[:,2], xinterp))
+
+# create wavefunction-points:
+plt.plot(xinterp, yinterp, "b-", label="interp. Potential")
+plt.plot(xPot, yPot, "ro", label="given Points")
+plt.plot(xinterp, eiveNorm[:,2], "k--", label="normalized wave1")
+#plt.plot(xinterp, eiveNorm[:,1], "k--", label="normalized wave2")
+plt.plot(xinterp, probDensityNorm[:,2], "g--", label="normalized probDensity")
+plt.xlim([xMin, xMax])
+plt.ylim([-2,2])
+plt.xlabel("$x$ [Bohr]")
+plt.ylabel("Energy $E$ [Hartree]")
+plt.title("Comparisation")
+plt.legend()
+plt.show()
