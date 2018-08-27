@@ -1,4 +1,6 @@
-# -*- coding: utf-8 -*-
+#!/usr/bin/env python3
+""""""
+
 import schrodinger_solver
 import schrodinger_visualize
 import numpy as np
@@ -41,4 +43,4 @@ schrodinger_solver.solve1d("schrodinger.inp")
 #plot solutions, stretfactor to scale wavefunktions,
 #split to move wavefunctions to eigenvalues
 #markersize for expectation values and uncertainty
-schrodinger_visualize.visualize(stretchfactor=2, split=True, markersize=15)
+schrodinger_visualize.visualize(stretchfactor=3, split=True, markersize=15)

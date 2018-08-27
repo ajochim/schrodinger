@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-""""""
+"""Module that solves the onedimensional Schrödinger equation for arbitrary potentials"""
+
 import numpy as np
 from scipy.linalg import eigh_tridiagonal
 from scipy.interpolate import interp1d
@@ -37,10 +38,6 @@ def solve1d(file):
     interType = schrodingerLines[3].split()[0]
     # print("\ninterpolation type:\n", interType)
     
-    nrInterPointsEntry = schrodingerLines[4].split()[0]
-    nrInterPoints = int(nrInterPointsEntry)
-    # print("\nnr. of interpolation points:\n", nrInterPoints)
-    
     potLen = len(schrodingerLines) - 5
     # print("\nnr. of pot-values:\n", potLen)
     xPot = np.zeros(potLen)
@@ -49,17 +46,13 @@ def solve1d(file):
         xPot[ii - 5] = float(schrodingerLines[ii].split()[0])
         yPot[ii - 5] = float(schrodingerLines[ii].split()[1])
     #print("\nx pot-values:\n", xPot, "\n\ny pot-values:\n", yPot)
-    schrodingerInp.close()
-    
-    
-    
+    schrodingerInp.close() 
+  
     # Interpolation of the potential:
     if interType == "linear":
         print("\nlinear interpolation selected")
         xinterp = np.linspace(xMin, xMax, nPoint)
-        print("\ngenerated x values\n", xinterp)
         yinterp = np.interp(xinterp, xPot, yPot)
-        print("\ngenerated y values\n", yinterp)
     
     elif interType == "cspline":
         print("\ncspline interpolation selected")
@@ -74,6 +67,7 @@ def solve1d(file):
         fPoly = np.poly1d(coeffPoly)  # read coeffizients
         xinterp = np.linspace(xMin, xMax, nPoint)
         yinterp = fPoly(xinterp)
+    
     else:
         print("error: invalid interpolation method")
     
@@ -84,7 +78,7 @@ def solve1d(file):
     
     #eigenvalues and eigenvectors:
     delta = abs(xinterp[1]-xinterp[0])
-    print("\nlength of xinterp:\n", len(xinterp), "\n\nobtained delta:\n", delta)
+    # print("\nlength of xinterp:\n", len(xinterp), "\n\nobtained delta:\n", delta)
     a = 1/(mass*(delta)**2)
     ludiag = np.zeros(nPoint-1)
     ludiag[:] = (-a)/2
@@ -95,10 +89,10 @@ def solve1d(file):
         mainDiag[jj] = a + yinterp[jj]
     
     
-    # eigenvalues in ascending (aufsteigend) order, the normalized eigenvector
+    # eigenvalues in ascending order, the normalized eigenvector
     # corresponding to the eigenvalue eiva[i] is the column eive[:,i]
     eiva, eive = eigh_tridiagonal(mainDiag, ludiag, select='a', select_range=None)
-    #print("\neigenvalues:\n", eiva, "\neigenvectors\n:", eive)
+    # print("\neigenvalues:\n", eiva, "\neigenvectors\n:", eive)
     
     # write eigenvalues und eigenvectors to files:
     np.savetxt("energies.dat", eiva[(firstEigv-1):(lastEigv)])
@@ -128,6 +122,7 @@ def solve1d(file):
     expvalues = np.hstack((expectation_values.reshape((-1, 1)), deviation_x.reshape((-1, 1))))
     np.savetxt("expvalues.dat", expvalues)
 
+    return eiva, xinterp, yinterp, xPot, yPot
 
 
     

@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-""""""
+"""Visualization module for the schrodinger_solver"""
+
 import numpy as np
 import matplotlib.pyplot as plt
 

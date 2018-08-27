@@ -5,4 +5,4 @@ pylintrc
 schrodinger.inp
 energies.dat
 wavefuncs.dat
-
+expvalues.dat
