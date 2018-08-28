@@ -29,11 +29,11 @@ def create_inputfile():# creates an input file via this skript for faster use
 #create_inputfile()
 
 #solves equation with given input file
-schrodinger_solver.solve1d("schrodinger.inp")
+#schrodinger_solver.solve1d("schrodinger.inp")
 #schrodinger_solver.solve1d("schrodinger_created.inp")#if used create_inputfile()
 
 #schrodinger_solver.solve1d("schrodinger_infwell.inp")
-#schrodinger_solver.solve1d("schrodinger_potwell.inp")
+schrodinger_solver.solve1d("schrodinger_potwell.inp")
 #schrodinger_solver.solve1d("schrodinger_doublewell.inp")
 #schrodinger_solver.solve1d("schrodinger_doublewellspline.inp")
 #schrodinger_solver.solve1d("schrodinger_asymwell.inp")
