@@ -6,3 +6,5 @@ schrodinger.inp
 energies.dat
 wavefuncs.dat
 expvalues.dat
+.cache
+.pytest_cache
