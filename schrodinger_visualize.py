@@ -5,7 +5,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 def visualize(stretchfactor=1, split=False, markersize=10):
-    """"""
+    """Visualizes the output of the solver function"""
+
     # Read given parameters
     xx = np.loadtxt("potential.dat")[:, 0]
     potential = np.loadtxt("potential.dat")[:, 1]
@@ -18,7 +19,7 @@ def visualize(stretchfactor=1, split=False, markersize=10):
     # Plot comparisation of the potentials:
     factor = stretchfactor
     off = 0
-    if split == True:
+    if split:
         off = 1
     nn = len(energies)
     interval_x = np.max(xx) - np.min(xx)
@@ -31,8 +32,10 @@ def visualize(stretchfactor=1, split=False, markersize=10):
     plt.xlim([np.min(xx) - interval_x/20, np.max(xx) + interval_x/20])
     plt.ylim(ylim)
     for ii in range(nn):
-        plt.axhline(energies[ii], np.min(xx), np.max(xx), color="gray") #plot eigenvalue lines
-        plt.plot(expectation_values[ii], off*energies[ii], "gx", ms=markersize) #plot expectation values
+        #plot eigenvalue lines
+        plt.axhline(energies[ii], np.min(xx), np.max(xx), color="gray")
+        #plot expectation values
+        plt.plot(expectation_values[ii], off*energies[ii], "gx", ms=markersize)
         if ii%2 == 0:
             plt.plot(xx, factor*wavefunctions[:, ii] + off*energies[ii], "r-")
         else:
