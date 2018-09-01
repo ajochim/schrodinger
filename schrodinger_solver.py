@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Module that solves the onedimensional Schrodinger equation for arbitrary potentials"""
 
+import sys
 import numpy as np
 from scipy.linalg import eigh_tridiagonal
 from scipy.interpolate import interp1d
@@ -10,9 +11,14 @@ def solve1d(file):
        by the input file schrodinger.inp"""
 
     # Read given parameters of "schrodinger.inp":
-    schrodingerinp = open(file, "r")
-    schrodingerlines = schrodingerinp.readlines()
-    # print(schrodingerlines)
+    try:
+        schrodingerinp = open(file, "r")
+        schrodingerlines = schrodingerinp.readlines()
+        # print(schrodingerlines)
+    except OSError:
+        print("Could not open specified inputfile: {}".format(file))
+        print("File is either not present or it exists but has wrong permissions\nExiting program")
+        sys.exit(1)
 
     massentry = schrodingerlines[0].split()[0]
     mass = float(massentry)
