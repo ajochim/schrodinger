@@ -72,13 +72,12 @@ def test_interpolation(testname_interp):
             interval_average = np.sum(yinterp[bool_array]) / \
             len(yinterp[bool_array])
 
-            intol_leftright_leftright = ((np.abs(interval_average_right - y_given)
-                                          < TOLERANCE_INTERP).all() \
+            intol_lr = ((np.abs(interval_average_right - y_given) < TOLERANCE_INTERP).all() \
             or (np.abs(interval_average_left - y_given) < TOLERANCE_INTERP).all())
 
-            intol_leftright = (np.abs(interval_average - y_given) < TOLERANCE_INTERP).all() \
-            or intol_leftright_leftright
-            test_interp = test_interp and intol_leftright
+            intol_all = (np.abs(interval_average - y_given) < TOLERANCE_INTERP).all() \
+            or intol_lr
+            test_interp = test_interp and intol_all
         else:
             interval_average = np.sum(yinterp[bool_array]) / len(yinterp[bool_array])
             test_interp = test_interp \
