@@ -5,7 +5,8 @@ from os import path
 import numpy as np
 import pytest
 
-import schrodinger_solver
+import schrodinger_in as io
+import schrodinger_solver as solver
 
 
 TOLERANCE_INTERP = 7e-2
@@ -23,14 +24,21 @@ ENERGY_TESTS = ["finite_pot_box_energies", "inf_pot_box_energies",
                 "harm_osz_energies", "asym_harm_osz_energies"]
 
 
-
 @pytest.mark.parametrize("testname_interp", INPUT_FULL)
 def test_interpolation(testname_interp):
     """Tests the interpolation of schrodinger_solver by comparing the
     interpolated potential with the given XY data"""
     input_files_interp = "{}.{}".format(path.join(INPUT_DIR, testname_interp), "inp")
 
-    eiva, xinterp, yinterp, xpot, ypot = schrodinger_solver.solve1d(input_files_interp)
+    obtained_input = io.read_input(input_files_interp)
+    xypot = obtained_input["xypot"]
+    xpot = xypot[:, 0]
+    ypot = xypot[:, 1]
+
+    interpot = solver.interpolate(obtained_input)
+    xinterp = interpot[:, 0]
+    yinterp = interpot[:, 1]
+
     given_pot = np.empty([len(xpot), 2])
     given_pot[:, 0] = xpot
     given_pot[:, 1] = ypot
@@ -105,18 +113,20 @@ def test_energies(testname_energie):
     .format(path.join(EXPECTED_DIR, testname_energie), "_energies", "out")
     eiva_ref = np.loadtxt(reference_files)
 
+    obtained_input = io.read_input(input_files_energies)
+    interpot = solver.interpolate(obtained_input)
+    eiva = solver.solve1d(obtained_input, interpot)
+
     if np.size(eiva_ref) == 1:
-        eiva, xinterp, yinterp, xpot, ypot = schrodinger_solver.solve1d(input_files_energies)
         eiva_restricted = eiva[0:np.size(eiva_ref)]
     else:
-        eiva, xinterp, yinterp, xpot, ypot = schrodinger_solver.solve1d(input_files_energies)
         eiva_restricted = eiva[0:len(eiva_ref)]
 
-    test_energies = True
-    test_energies = test_energies \
+    test_energies_assert = True
+    test_energies_assert = test_energies_assert \
     and (np.abs(eiva_restricted - eiva_ref) < TOLERANCE_ENERGIES).all()
 
-    assert test_energies
+    assert test_energies_assert
 
 @pytest.mark.parametrize("testname_compare", INPUT_FULL)
 def test_compare(testname_compare):
@@ -134,13 +144,22 @@ def test_compare(testname_compare):
     xref = interp_ref_comp[:, 0]
     yref = interp_ref_comp[:, 1]
 
-    eiva, xinterp, yinterp, xpot, ypot = schrodinger_solver.solve1d(input_comp)
+    obtained_input = io.read_input(input_comp)
+
+    interpot = solver.interpolate(obtained_input)
+    xinterp = interpot[:, 0]
+    yinterp = interpot[:, 1]
+
+    eiva = solver.solve1d(obtained_input, interpot)
     eiva_res = eiva[0:len(eiva_ref_comp)]
 
-    test_compare = True
-    test_compare = test_compare and (np.abs(xinterp - xref) == 0).all()
-    test_compare = test_compare and (np.abs(yinterp - yref) == 0).all()
-    test_compare = test_compare and (np.abs(eiva_res - eiva_ref_comp) == 0).all()
+    test_compare_assert = True
+    test_compare_assert = test_compare_assert and (np.abs(xinterp - xref) == 0).all()
+    test_compare_assert = test_compare_assert and (np.abs(yinterp - yref) == 0).all()
+    test_compare_assert = test_compare_assert and (np.abs(eiva_res - eiva_ref_comp) == 0).all()
+
+    assert test_compare_assert
+
 
 if __name__ == "__main__":
     pytest.main()

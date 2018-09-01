@@ -3,8 +3,9 @@
 
 import numpy as np
 
-import schrodinger_solver
-import schrodinger_visualize
+import schrodinger_in as io
+import schrodinger_solver as solver
+import schrodinger_visualize as visualize
 
 
 #creates inputfile
@@ -30,19 +31,24 @@ def create_inputfile():
         file.write(str(xx[ii]) + " " + str(potential[ii]) + "\n")
 
 #create_inputfile()
-
 #solves equation with given input file
-schrodinger_solver.solve1d("schrodinger1.inp")
+#solver.solve1d(mass, npoint, firsteigv, lasteigv, interpot)
 #schrodinger_solver.solve1d("schrodinger_created.inp")#if used create_inputfile()
 
-#schrodinger_solver.solve1d("schrodinger_infwell.inp")
-#schrodinger_solver.solve1d("schrodinger_potwell.inp")
-#schrodinger_solver.solve1d("schrodinger_doublewell.inp")
-#schrodinger_solver.solve1d("schrodinger_doublewellspline.inp")
-#schrodinger_solver.solve1d("schrodinger_asymwell.inp")
-#schrodinger_solver.solve1d("schrodinger_harmosz.inp")
+OBTAINED_INPUT = io.read_input("schrodinger.inp")
+
+#OBTAINED_INPUT = io.read_input("schrodinger_infwell.inp")
+#OBTAINED_INPUT = io.read_input("schrodinger_potwell.inp")
+#OBTAINED_INPUT = io.read_input("schrodinger_doublewell.inp")
+#OBTAINED_INPUT = io.read_input("schrodinger_doublewellspline.inp")
+#OBTAINED_INPUT = io.read_input("schrodinger_asymwell.inp")
+#OBTAINED_INPUT = io.read_input("schrodinger_harmosz.inp")
+
+
+INTERPOT = solver.interpolate(OBTAINED_INPUT)
+solver.solve1d(OBTAINED_INPUT, INTERPOT)
 
 #plot solutions, stretfactor to scale wavefunktions,
 #split to move wavefunctions to eigenvalues
 #markersize for expectation values and uncertainty
-schrodinger_visualize.visualize(stretchfactor=3, split=True, markersize=15)
+visualize.show(stretchfactor=3, split=True, markersize=15)

@@ -5,7 +5,7 @@ import sys
 import numpy as np
 import matplotlib.pyplot as plt
 
-def visualize(stretchfactor=1, split=False, markersize=10):
+def show(stretchfactor=1, split=False, markersize=10):
     """Visualizes the output of the solver function"""
 
     # Read given parameters
