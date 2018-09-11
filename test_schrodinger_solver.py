@@ -117,15 +117,15 @@ def test_energies(testname_energie):
     interpot = solver.interpolate(obtained_input)
     data = solver.solve1d(obtained_input, interpot)
     eiva = data["energies"]
-#
-#    if np.size(eiva_ref) == 1:
-#        eiva_restricted = eiva[0:np.size(eiva_ref)]
-#    else:
-#        eiva_restricted = eiva[0:len(eiva_ref)]
+
+    if np.size(eiva_ref) == 1:
+        eiva_restricted = eiva[0:np.size(eiva_ref)]
+    else:
+        eiva_restricted = eiva[0:len(eiva_ref)]
 
     test_energies_assert = True
     test_energies_assert = test_energies_assert \
-    and (np.abs(eiva - eiva_ref) < TOLERANCE_ENERGIES).all()
+    and (np.abs(eiva_restricted - eiva_ref) < TOLERANCE_ENERGIES).all()
 
     assert test_energies_assert
 
@@ -153,11 +153,12 @@ def test_compare(testname_compare):
 
     data = solver.solve1d(obtained_input, interpot)
     eiva = data["energies"]
+    eiva_res = eiva[0:len(eiva_ref_comp)]
 
     test_compare_assert = True
     test_compare_assert = test_compare_assert and (np.abs(xinterp - xref) == 0).all()
     test_compare_assert = test_compare_assert and (np.abs(yinterp - yref) == 0).all()
-    test_compare_assert = test_compare_assert and (np.abs(eiva - eiva_ref_comp) == 0).all()
+    test_compare_assert = test_compare_assert and (np.abs(eiva_res - eiva_ref_comp) == 0).all()
 
     assert test_compare_assert
 
