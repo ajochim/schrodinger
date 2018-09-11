@@ -35,7 +35,7 @@ def create_inputfile():
 #solver.solve1d(mass, npoint, firsteigv, lasteigv, interpot)
 #schrodinger_solver.solve1d("schrodinger_created.inp")#if used create_inputfile()
 
-OBTAINED_INPUT = io.read_input("schrodinger.inp")
+OBTAINED_INPUT = io.read_input("/tests/input/schrodinger.inp")
 
 #OBTAINED_INPUT = io.read_input("schrodinger_infwell.inp")
 #OBTAINED_INPUT = io.read_input("schrodinger_potwell.inp")
