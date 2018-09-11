@@ -5,7 +5,7 @@ from os import path
 import numpy as np
 import pytest
 
-import schrodinger_in as io
+import schrodinger_io as io
 import schrodinger_solver as solver
 
 
@@ -115,16 +115,17 @@ def test_energies(testname_energie):
 
     obtained_input = io.read_input(input_files_energies)
     interpot = solver.interpolate(obtained_input)
-    eiva = solver.solve1d(obtained_input, interpot)
-
-    if np.size(eiva_ref) == 1:
-        eiva_restricted = eiva[0:np.size(eiva_ref)]
-    else:
-        eiva_restricted = eiva[0:len(eiva_ref)]
+    data = solver.solve1d(obtained_input, interpot)
+    eiva = data["energies"]
+#
+#    if np.size(eiva_ref) == 1:
+#        eiva_restricted = eiva[0:np.size(eiva_ref)]
+#    else:
+#        eiva_restricted = eiva[0:len(eiva_ref)]
 
     test_energies_assert = True
     test_energies_assert = test_energies_assert \
-    and (np.abs(eiva_restricted - eiva_ref) < TOLERANCE_ENERGIES).all()
+    and (np.abs(eiva - eiva_ref) < TOLERANCE_ENERGIES).all()
 
     assert test_energies_assert
 
@@ -150,13 +151,13 @@ def test_compare(testname_compare):
     xinterp = interpot[:, 0]
     yinterp = interpot[:, 1]
 
-    eiva = solver.solve1d(obtained_input, interpot)
-    eiva_res = eiva[0:len(eiva_ref_comp)]
+    data = solver.solve1d(obtained_input, interpot)
+    eiva = data["energies"]
 
     test_compare_assert = True
     test_compare_assert = test_compare_assert and (np.abs(xinterp - xref) == 0).all()
     test_compare_assert = test_compare_assert and (np.abs(yinterp - yref) == 0).all()
-    test_compare_assert = test_compare_assert and (np.abs(eiva_res - eiva_ref_comp) == 0).all()
+    test_compare_assert = test_compare_assert and (np.abs(eiva - eiva_ref_comp) == 0).all()
 
     assert test_compare_assert
 

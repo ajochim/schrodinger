@@ -43,23 +43,22 @@ def interpolate(obtained_input):
         print("error: invalid interpolation method")
         sys.exit(1)
 
-    # write obtained points to file "potential.dat":
+    #format interpolated values
     interppot = np.hstack((xinterp.reshape((-1, 1)), yinterp.reshape((-1, 1))))
-    np.savetxt("potential.dat", interppot)
 
     return interppot
 
-def solve1d(obtained_input, interpot):
+def solve1d(obtained_input, pot):
     """Solves the 1D schrodinger equation with potential/parameters given
-       by the input file schrodinger.inp"""
+       by the input file schrodinger.inp and returns dictionary"""
 
     mass = obtained_input["mass"]
     npoint = obtained_input["npoint"]
     firsteigv = obtained_input["firsteigv"]
     lasteigv = obtained_input["lasteigv"]
 
-    xinterp = interpot[:, 0]
-    yinterp = interpot[:, 1]
+    xinterp = pot[:, 0]
+    yinterp = pot[:, 1]
 
     #eigenvalues and eigenvectors:
     delta = abs(xinterp[1]-xinterp[0])
@@ -71,28 +70,30 @@ def solve1d(obtained_input, interpot):
     for jj in range(0, npoint):
         maindiag[jj] = aa + yinterp[jj]
 
-
     # eigenvalues in ascending order, the normalized eigenvector
     # corresponding to the eigenvalue eiva[i] is the column eive[:,i]
     eiva, eive = eigh_tridiagonal(maindiag, ludiag, select='a', select_range=None)
 
-    # write eigenvalues und eigenvectors to files:
-    np.savetxt("energies.dat", eiva[(firsteigv-1):(lasteigv)])
+    # reshape wavefunctions
     wavefunctions = np.hstack((xinterp.reshape((-1, 1)), eive))
-    np.savetxt("wavefuncs.dat", wavefunctions[:, (firsteigv-1):(lasteigv +1)])
 
     #expectation values and uncertainties
-    expectation_values = np.zeros(int(lasteigv-firsteigv + 1))
-    expectation_values_squared = np.zeros(int(lasteigv-firsteigv + 1))
-    deviation_x = np.zeros(int(lasteigv-firsteigv + 1))
+    expectation_values = np.zeros(int(lasteigv - firsteigv + 1))
+    expectation_values_squared = np.zeros(int(lasteigv - firsteigv + 1))
+    deviation_x = np.zeros(int(lasteigv - firsteigv + 1))
 
     for ii in range(int(lasteigv-firsteigv + 1)):
         expectation_values[ii] = np.sum(xinterp[:]*((eive[:, ii])**2))
         expectation_values_squared[ii] = np.sum(((xinterp[:])**2)*(eive[:, ii])**2)
         deviation_x[ii] = np.sqrt(expectation_values_squared[ii] - (expectation_values[ii])**2)
 
-    #write expectationvalues and deviation to file
+    #reshape expectationvalues and deviation
     expvalues = np.hstack((expectation_values.reshape((-1, 1)), deviation_x.reshape((-1, 1))))
-    np.savetxt("expvalues.dat", expvalues)
 
-    return eiva
+    data = {} #dicitionary for all calculated values
+    data.update({"potential": pot})
+    data.update({"energies": eiva[(firsteigv - 1):(lasteigv)]})
+    data.update({"wavefuncs": wavefunctions[:, (firsteigv - 1):(lasteigv + 1)]})
+    data.update({"expvalues": expvalues})
+
+    return data
