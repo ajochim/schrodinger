@@ -10,7 +10,7 @@ import schrodinger_solver as solver
 
 
 TOLERANCE_INTERP = 7e-2
-TOLERANCE_ENERGIES = 3.5e-2
+TOLERANCE_ENERGIES = 3.6e-2
 TOLERANCE_COMPARE = 1e-10
 
 INPUT_DIR = path.join("tests", "input")
@@ -156,9 +156,9 @@ def test_compare(testname_compare):
     eiva_res = eiva[0:len(eiva_ref_comp)]
 
     test_compare_assert = True
-    test_compare_assert = test_compare_assert and (np.abs(xinterp - xref) == 0).all()
-    test_compare_assert = test_compare_assert and (np.abs(yinterp - yref) == 0).all()
-    test_compare_assert = test_compare_assert and (np.abs(eiva_res - eiva_ref_comp) == 0).all()
+    test_compare_assert = test_compare_assert and (np.abs(xinterp - xref) < TOLERANCE_INTERP).all()
+    test_compare_assert = test_compare_assert and (np.abs(yinterp - yref) < TOLERANCE_INTERP).all()
+    test_compare_assert = test_compare_assert and (np.abs(eiva_res - eiva_ref_comp) < TOLERANCE_ENERGIES).all()
 
     assert test_compare_assert
 

@@ -4,7 +4,7 @@
 import sys
 import numpy as np
 from scipy.linalg import eigh_tridiagonal
-from scipy.interpolate import interp1d
+from scipy.interpolate import CubicSpline
 
 
 def interpolate(obtained_input):
@@ -16,6 +16,7 @@ def interpolate(obtained_input):
     xmax = obtained_input["xmax"]
     npoint = obtained_input["npoint"]
     xypot = obtained_input["xypot"]
+    potlen = obtained_input["potlen"]
     xpot = xypot[:, 0]
     ypot = xypot[:, 1]
 
@@ -27,14 +28,13 @@ def interpolate(obtained_input):
 
     elif intertype == "cspline":
         print("\ncspline interpolation selected")
-        fcspline = interp1d(xpot, ypot, kind='cubic')
+        fcspline = CubicSpline(xpot, ypot, bc_type="natural")
         xinterp = np.linspace(xmin, xmax, npoint)
         yinterp = fcspline(xinterp)
 
     elif intertype == "polynomial":
-        poldegree = 2
-        print("\npolynomial interpolation of degree", poldegree, "selected")
-        coeffpoly = np.polyfit(xpot, ypot, poldegree)
+        print("\npolynomial interpolation selected")
+        coeffpoly = np.polyfit(xpot, ypot, potlen - 1)
         fpoly = np.poly1d(coeffpoly)
         xinterp = np.linspace(xmin, xmax, npoint)
         yinterp = fpoly(xinterp)

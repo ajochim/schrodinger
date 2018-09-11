@@ -57,7 +57,8 @@ def show(stretchfactor=1, split=False, markersize=10):
     plt.ylim(ylim)
     for ii in range(nn):
         plt.axhline(energies[ii], np.min(xx), np.max(xx), color="gray")
-        plt.plot(deviation_x[ii], off*energies[ii], "m+", ms=markersize) #plot uncertainty
+        #plot uncertainty
+        plt.plot(deviation_x[ii], off*energies[ii], "m+", ms=markersize)
 
     plt.xlabel("$\sigma_\mathrm{x}$ [Bohr]")
     plt.title(r"Standard Deviation $\sigma_\mathrm{x}$")

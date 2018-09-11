@@ -14,7 +14,7 @@ PARSER.add_argument("-d", "--directory", default=".", help=MSG)
 MSG = "Splitting wavefunctions in plot: (default: False)"
 PARSER.add_argument("-s", "--split", default=False, action="store_true", help=MSG)
 MSG = "Stretch wavefunctions in plot: (default: 3.0)"
-PARSER.add_argument("-st", "--stretch", default=3.0, help=MSG)
+PARSER.add_argument("-st", "--stretch", default=1.0, help=MSG)
 MSG = "Change Markersize in plot: (default: 10.0)"
 PARSER.add_argument("-m", "--markersize", default=10.0, help=MSG)
 ARGS = PARSER.parse_args()
