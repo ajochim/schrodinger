@@ -60,3 +60,11 @@ def read_input(file):
                       "potlen": potlen, "xypot": xypot}
 
     return obtained_input
+
+def output(data):
+    """Write calculated data to files"""
+
+    np.savetxt("potential.dat", data["potential"])
+    np.savetxt("energies.dat", data["energies"])
+    np.savetxt("wavefuncs.dat", data["wavefuncs"])
+    np.savetxt("expvalues.dat", data["expvalues"])
