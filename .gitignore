@@ -8,3 +8,6 @@ wavefuncs.dat
 expvalues.dat
 .cache
 .pytest_cache
+schrodinger.pdf
+schrodinger_ingui.py
+schrodinger_created.inp

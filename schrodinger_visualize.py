@@ -5,7 +5,7 @@ import sys
 import numpy as np
 import matplotlib.pyplot as plt
 
-def visualize(stretchfactor=1, split=False, markersize=10):
+def show(stretchfactor=1, split=False, markersize=10):
     """Visualizes the output of the solver function"""
 
     # Read given parameters
@@ -22,13 +22,13 @@ def visualize(stretchfactor=1, split=False, markersize=10):
 
     # Plotting
     # plot comparisation of the potentials:
-    factor = stretchfactor
+    # Not usung True and False as 0 and 1
     off = 0
     if split:
         off = 1
-    nn = len(energies)
     interval_x = np.max(xx) - np.min(xx)
     interval_y = np.max(energies) - np.min(energies)
+    nn = len(energies)
     # ylim for both plots, adding space on boundaries for nicer look
     ylim = [np.min(potential) - interval_y/20, np.max(energies) + interval_y/5]
 
@@ -42,9 +42,9 @@ def visualize(stretchfactor=1, split=False, markersize=10):
         # plot expectation values
         plt.plot(expectation_values[ii], off*energies[ii], "gx", ms=markersize)
         if ii%2 == 0:
-            plt.plot(xx, factor*wavefunctions[:, ii] + off*energies[ii], "r-")
+            plt.plot(xx, stretchfactor*wavefunctions[:, ii] + off*energies[ii], "r-")
         else:
-            plt.plot(xx, factor*wavefunctions[:, ii] + off*energies[ii], "b-")
+            plt.plot(xx, stretchfactor*wavefunctions[:, ii] + off*energies[ii], "b-")
 
     plt.xlabel("$x$ [Bohr]")
     plt.ylabel("Energy $E$ [Hartree]")
@@ -61,4 +61,5 @@ def visualize(stretchfactor=1, split=False, markersize=10):
 
     plt.xlabel("$\sigma_\mathrm{x}$ [Bohr]")
     plt.title(r"Standard Deviation $\sigma_\mathrm{x}$")
+    plt.savefig("schrodinger.pdf")
     
