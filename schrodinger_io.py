@@ -19,30 +19,31 @@ def read_input(file):
 
     massentry = schrodingerlines[0].split()[0]
     mass = float(massentry)
-    # print("\nmass m:\n", mass)
+    print("\nobtained parameters: ")
+    print("mass: ", mass)
 
     xminentry = schrodingerlines[1].split()[0]
     xmin = float(xminentry)
-    # print("\nxmin:\n", xmin)
+    #print("xmin: ", xmin)
 
     xmaxentry = schrodingerlines[1].split()[1]
     xmax = float(xmaxentry)
-    # print("\nxmax:\n", xmax)
+    print("xmin, xmax: ", xmin, ", ", xmax)
 
     npointentry = schrodingerlines[1].split()[2]
     npoint = int(npointentry)
-    # print("\npoint:\n", npoint)
+    print("number of interpolation points: ", npoint)
 
     firsteigventry = schrodingerlines[2].split()[0]
     firsteigv = int(firsteigventry)
-    # print("\nfirst eigenvalue to print:\n", firsteigv)
+    #print("first eigenvalue to print: ", firsteigv)
 
     lasteigventry = schrodingerlines[2].split()[1]
     lasteigv = int(lasteigventry)
-    # print("\nsecond eigenvalue to print:\n", secondEigv)
+    print("first, last eigenvalue to print: ", firsteigv, ", ", lasteigv)
 
     intertype = schrodingerlines[3].split()[0]
-    # print("\ninterpolation type:\n", intertype)
+    #print("interpolation type: ", intertype)
 
     potlen = len(schrodingerlines) - 5
     # print("\nnr. of pot-values:\n", potlen)

@@ -22,25 +22,25 @@ def interpolate(obtained_input):
 
     # Interpolation of the potential:
     if intertype == "linear":
-        print("\nlinear interpolation selected")
+        print("linear interpolation selected\n")
         xinterp = np.linspace(xmin, xmax, npoint)
         yinterp = np.interp(xinterp, xpot, ypot)
 
     elif intertype == "cspline":
-        print("\ncspline interpolation selected")
+        print("cspline interpolation selected\n")
         fcspline = CubicSpline(xpot, ypot, bc_type="natural")
         xinterp = np.linspace(xmin, xmax, npoint)
         yinterp = fcspline(xinterp)
 
     elif intertype == "polynomial":
-        print("\npolynomial interpolation selected")
+        print("polynomial interpolation selected\n")
         coeffpoly = np.polyfit(xpot, ypot, potlen - 1)
         fpoly = np.poly1d(coeffpoly)
         xinterp = np.linspace(xmin, xmax, npoint)
         yinterp = fpoly(xinterp)
 
     else:
-        print("error: invalid interpolation method")
+        print("\nerror: invalid interpolation method\n")
         sys.exit(1)
 
     #format interpolated values
