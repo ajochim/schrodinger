@@ -9,26 +9,26 @@ import schrodinger_io as io
 import schrodinger_solver as solver
 
 
-TOLERANCE_INTERP = 7e-2
-TOLERANCE_ENERGIES = 3.6e-2
-TOLERANCE_COMPARE = 1e-10
+_TOLERANCE_INTERP = 7e-2
+_TOLERANCE_ENERGIES = 3.6e-2
+_TOLERANCE_COMPARE = 1e-10
 
-INPUT_DIR = path.join("tests", "input")
-EXPECTED_DIR = path.join("tests", "expected")
+_INPUT_DIR = path.join("tests", "input")
+_EXPECTED_DIR = path.join("tests", "expected")
 
-INPUT_FULL = ["finite_pot_box", "inf_pot_box", "harm_osz", "asym_harm_osz",
+_INPUT_FULL = ["finite_pot_box", "inf_pot_box", "harm_osz", "asym_harm_osz",
               "double_pot_linear", "double_pot_spline"]
-INPUT_ENERGY = ["finite_pot_box", "inf_pot_box", "harm_osz", "asym_harm_osz"]
+_INPUT_ENERGY = ["finite_pot_box", "inf_pot_box", "harm_osz", "asym_harm_osz"]
 
-ENERGY_TESTS = ["finite_pot_box_energies", "inf_pot_box_energies",
+_ENERGY_TESTS = ["finite_pot_box_energies", "inf_pot_box_energies",
                 "harm_osz_energies", "asym_harm_osz_energies"]
 
 
-@pytest.mark.parametrize("testname_interp", INPUT_FULL)
+@pytest.mark.parametrize("testname_interp", _INPUT_FULL)
 def test_interpolation(testname_interp):
     """Tests the interpolation of schrodinger_solver by comparing the
     interpolated potential with the given XY data"""
-    input_files_interp = "{}.{}".format(path.join(INPUT_DIR, testname_interp), "inp")
+    input_files_interp = "{}.{}".format(path.join(_INPUT_DIR, testname_interp), "inp")
 
     obtained_input = io.read_input(input_files_interp)
     xypot = obtained_input["xypot"]
@@ -80,16 +80,16 @@ def test_interpolation(testname_interp):
             interval_average = np.sum(yinterp[bool_array]) / \
             len(yinterp[bool_array])
 
-            intol_lr = ((np.abs(interval_average_right - y_given) < TOLERANCE_INTERP).all() \
-            or (np.abs(interval_average_left - y_given) < TOLERANCE_INTERP).all())
+            intol_lr = ((np.abs(interval_average_right - y_given) < _TOLERANCE_INTERP).all() \
+            or (np.abs(interval_average_left - y_given) < _TOLERANCE_INTERP).all())
 
-            intol_all = (np.abs(interval_average - y_given) < TOLERANCE_INTERP).all() \
+            intol_all = (np.abs(interval_average - y_given) < _TOLERANCE_INTERP).all() \
             or intol_lr
             test_interp = test_interp and intol_all
         else:
             interval_average = np.sum(yinterp[bool_array]) / len(yinterp[bool_array])
             test_interp = test_interp \
-            and (np.abs(interval_average - y_given) < TOLERANCE_INTERP).all()
+            and (np.abs(interval_average - y_given) < _TOLERANCE_INTERP).all()
 
 #        # extraordinary treatment of discontinuities:
 #        if test_interp == False:
@@ -103,14 +103,14 @@ def test_interpolation(testname_interp):
 
     assert test_interp
 
-@pytest.mark.parametrize("testname_energie", INPUT_ENERGY)
+@pytest.mark.parametrize("testname_energie", _INPUT_ENERGY)
 def test_energies(testname_energie):
     """Tests the energy-levels of schrodinger_solver by comparing thoose
     with exact results or groundstates"""
-    input_files_energies = "{}.{}".format(path.join(INPUT_DIR, testname_energie), "inp")
+    input_files_energies = "{}.{}".format(path.join(_INPUT_DIR, testname_energie), "inp")
 
     reference_files = "{}{}.{}" \
-    .format(path.join(EXPECTED_DIR, testname_energie), "_energies", "out")
+    .format(path.join(_EXPECTED_DIR, testname_energie), "_energies", "out")
     eiva_ref = np.loadtxt(reference_files)
 
     obtained_input = io.read_input(input_files_energies)
@@ -125,22 +125,22 @@ def test_energies(testname_energie):
 
     test_energies_assert = True
     test_energies_assert = test_energies_assert \
-    and (np.abs(eiva_restricted - eiva_ref) < TOLERANCE_ENERGIES).all()
+    and (np.abs(eiva_restricted - eiva_ref) < _TOLERANCE_ENERGIES).all()
 
     assert test_energies_assert
 
-@pytest.mark.parametrize("testname_compare", INPUT_FULL)
+@pytest.mark.parametrize("testname_compare", _INPUT_FULL)
 def test_compare(testname_compare):
     """Tests the constant functioning of the code by comparing previously
     calculated energy-levels and potential data with the current output of the solver"""
-    input_comp = "{}.{}".format(path.join(INPUT_DIR, testname_compare), "inp")
+    input_comp = "{}.{}".format(path.join(_INPUT_DIR, testname_compare), "inp")
 
     ref_en_comp = "{}{}.{}" \
-    .format(path.join(EXPECTED_DIR, testname_compare), "_energies_compare", "out")
+    .format(path.join(_EXPECTED_DIR, testname_compare), "_energies_compare", "out")
     eiva_ref_comp = np.loadtxt(ref_en_comp)
 
     ref_in_comp = "{}{}.{}" \
-    .format(path.join(EXPECTED_DIR, testname_compare), "_interp_compare", "out")
+    .format(path.join(_EXPECTED_DIR, testname_compare), "_interp_compare", "out")
     interp_ref_comp = np.loadtxt(ref_in_comp)
     xref = interp_ref_comp[:, 0]
     yref = interp_ref_comp[:, 1]
@@ -156,9 +156,9 @@ def test_compare(testname_compare):
     eiva_res = eiva[0:len(eiva_ref_comp)]
 
     test_compare_assert = True
-    test_compare_assert = test_compare_assert and (np.abs(xinterp - xref) < TOLERANCE_INTERP).all()
-    test_compare_assert = test_compare_assert and (np.abs(yinterp - yref) < TOLERANCE_INTERP).all()
-    test_compare_assert = test_compare_assert and (np.abs(eiva_res - eiva_ref_comp) < TOLERANCE_ENERGIES).all()
+    test_compare_assert = test_compare_assert and (np.abs(xinterp - xref) < _TOLERANCE_INTERP).all()
+    test_compare_assert = test_compare_assert and (np.abs(yinterp - yref) < _TOLERANCE_INTERP).all()
+    test_compare_assert = test_compare_assert and (np.abs(eiva_res - eiva_ref_comp) < _TOLERANCE_ENERGIES).all()
 
     assert test_compare_assert
 
