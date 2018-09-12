@@ -9,7 +9,7 @@ from scipy.interpolate import CubicSpline
 
 def interpolate(obtained_input):
     """Interpolation routine, that interpolates the given potential data with
-       a specified interpolation method
+    a specified interpolation method
 
     Args:
         obtained_input (dict): obtained input of schrodinger_io.read_input()

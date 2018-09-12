@@ -27,7 +27,7 @@ _ENERGY_TESTS = ["finite_pot_box_energies", "inf_pot_box_energies",
 @pytest.mark.parametrize("testname_interp", _INPUT_FULL)
 def test_interpolation(testname_interp):
     """Tests the interpolation of schrodinger_solver by comparing the
-       interpolated potential with the given XY data
+    interpolated potential with the given XY data
 
     Args:
         testname_interp (str): to create path of reference and input files
@@ -89,7 +89,7 @@ def test_interpolation(testname_interp):
 @pytest.mark.parametrize("testname_energie", _INPUT_ENERGY)
 def test_energies(testname_energie):
     """Tests the energy-levels of schrodinger_solver by comparing thoose
-       with exact results or groundstates calculated on paper
+    with exact results or groundstates calculated on paper
 
     Args:
         testname_energie (str): to create path of reference and input files
@@ -124,7 +124,7 @@ def test_energies(testname_energie):
 @pytest.mark.parametrize("testname_compare", _INPUT_FULL)
 def test_compare(testname_compare):
     """Tests the constant functioning of the code by comparing previously
-       calculated energy-levels and potential data with the current output of the solver
+    calculated energy-levels and potential data with the current output of the solver
 
     Args:
         testname_compare (str): to create path of reference and input files
