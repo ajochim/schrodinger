@@ -5,9 +5,18 @@ import sys
 import numpy as np
 
 def read_input(file):
-    """Read given parameters and potential data of 'schrodinger.inp'"""
+    """Read given parameters and potential data of 'schrodinger.inp'
 
-    # Read given parameters of "schrodinger.inp":
+    Args:
+        file (str): path to input file schrodinger.inp
+
+    Returns:
+        obtained_input (dict): obtained input from 'file'
+
+    Raises:
+        OSError: if input file is not present or has wrong permissions/name
+
+    """
     try:
         schrodingerinp = open(file, "r")
         schrodingerlines = schrodingerinp.readlines()
@@ -63,8 +72,12 @@ def read_input(file):
     return obtained_input
 
 def output(data):
-    """Write calculated data to files"""
+    """Write calculated data to files
 
+    Args:
+        data (dict): dictionary with calculated data from solve1d
+
+    """
     np.savetxt("potential.dat", data["potential"])
     np.savetxt("energies.dat", data["energies"])
     np.savetxt("wavefuncs.dat", data["wavefuncs"])

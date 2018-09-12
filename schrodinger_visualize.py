@@ -6,8 +6,18 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 def show(stretchfactor=1, split=False, markersize=10):
-    """Visualizes the output of the solver function"""
+    """Visualizes the output of the solver function and saves to schrodinger.pdf
 
+    Args:
+        stretchfactor (float): stretches the wavefunctions in y-direction
+        split (bool): creates offset to wavefunction, expectationsvalues
+        and standard deviation if set to 'True'
+        markersize (float): changes markersize of expectations values and standard deviation
+
+    Raises:
+        OSError: if input file is not present or has wrong permissions/name
+
+    """
     # Read given parameters
     try:
         xx = np.loadtxt("potential.dat")[:, 0]
@@ -17,7 +27,9 @@ def show(stretchfactor=1, split=False, markersize=10):
         expectation_values = np.loadtxt("expvalues.dat")[:, 0]
         deviation_x = np.loadtxt("expvalues.dat")[:, 1]
     except OSError:
-        print("Could not open file(s)\nExiting program")
+        print("Could not open datafile(s)")
+        print("File(s) is/are either not present or exists/existing \
+               but has/have wrong permissions\nExiting program")
         sys.exit(1)
 
     # Plotting
