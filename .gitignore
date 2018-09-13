@@ -2,7 +2,6 @@
 __pycache__
 potential.dat
 pylintrc
-schrodinger.inp
 energies.dat
 wavefuncs.dat
 expvalues.dat
