@@ -3,5 +3,5 @@ A program that solves the 1d schrodinger equation. It reads a file schrodinger.i
 
 For documentation read: 
 
-schrodinger_documentation.html (recommended)
-schrodinger_documentation.pdf  (not recommended)
+/docs/_build/html/index.html (recommended)
+/latex_doc/schrodinger.pdf   (not recommended)
