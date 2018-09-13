@@ -43,7 +43,7 @@ must have the following structure:
 You can use as many interpolation points as you want. The number has to fit 
 the number of xy declarations afterwards. Possible interpolation types are 
 *linear*, *csplines* and *polynomial*. *nPoints* is the number of discrete 
-points that are used for calculting.
+points that are used for calculating.
 
 All calculations are saved in the following files. They are used to plot
 the data and can be used for further work:
@@ -71,7 +71,7 @@ the data and can be used for further work:
 
 * *wavefuncs.dat*
 
-  calculeted wavefunctions in NXY-Format
+  calculated wavefunctions in NXY-Format
 
   ::
 
@@ -92,61 +92,76 @@ the data and can be used for further work:
 ****************
 Starting Options
 ****************
-Starting options (optional parameters) for the main module *schrodinger.py*
+Starting options (optional parameters) for the main module *schrodinger.py*.
+Use the long form as -*-name* or use the short version showed below.
 
 -------------------
 Optional Parameters
 -------------------
 
-* Directoy: -d [path]
+* directory: -d [path]
 
   Used to specify the path of the input file *schrodinger.inp*
 
-* Split: -s
+* split: -s
 
   Splitting the wavefunctions, expectation values and standard deviations in
   the plot for a better view.
 
-* Stretch: -st [float]
+* stretch: -st [float]
 
   Multiplies the wavefunctions with a factor for a better view.
 
-* Markersize: -m [float]
+* markersize: -m [float]
 
   Changes the markersize of the expectation values and standard deviation.
 
 *******
 Modules
 *******
------------
-schrodinger
------------
+--------------
+schrodinger.py
+--------------
 Main module that can be used with the starting options (optional parameters)
 above.
 
---------------
-schrodinger_io
---------------
+-----------------
+schrodinger_io.py
+-----------------
 .. automodule:: schrodinger_io
    :members:
 
-------------------
-schrodinger_solver
-------------------
+---------------------
+schrodinger_solver.py
+---------------------
 .. automodule:: schrodinger_solver
    :members:
 
----------------------
-schrodinger_visualize
----------------------
+------------------------
+schrodinger_visualize.py
+------------------------
 .. automodule:: schrodinger_visualize
    :members:
 
------------------------
-test_schrodinger_solver
------------------------
+--------------------------
+test_schrodinger_solver.py
+--------------------------
 .. automodule:: test_schrodinger_solver
    :members:
 
+****************
+Scientific Notes
+****************
+All calculations are numeric! The potential defined by discrete reference
+points inside the input file is interpolated using numerical algorithms 
+(e.g., finite differences and integrals as Riemann sums).
+The constructions of a tridiagonal matrix allows solving the time independent
+schrodinger equation at discrete points as an eigenvalue problem. This 
+results in inaccuracies both due to discretization errors and due to rounding
+errors in the floating-point number calculation.
 
-
+The probability of the particle to be inside the given x-boundaries is treated
+as 100%, so the probablity outside has to be 0. Therefore the problem has 
+aquivalent additonal infinite high potential walls at 'xmin' and 'xmax'. 
+In case of non-decreasing wavefunction amplitudes outside the potential
+boundaries, reconsideration of the calculated solutions is recommended.
