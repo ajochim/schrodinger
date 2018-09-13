@@ -35,9 +35,8 @@ else:
     print("markersize is currently set to ", PARSER.get_default("markersize"), "\t\t\t\t(default)")
 
 # main program
-if __name__ == "__main__":
-    OBTAINED_INPUT = io.read_input(PATH)
-    INTERPOT = solver.interpolate(OBTAINED_INPUT)
-    CALCULATED = solver.solve1d(OBTAINED_INPUT, INTERPOT)
-    io.output(CALCULATED)
-    visualize.show(stretchfactor=3, split=True, markersize=15)
+OBTAINED_INPUT = io.read_input(PATH)
+INTERPOT = solver.interpolate(OBTAINED_INPUT)
+CALCULATED = solver.solve1d(OBTAINED_INPUT, INTERPOT)
+io.output(CALCULATED)
+visualize.show(float(ARGS.stretch), ARGS.split, float(ARGS.markersize))

@@ -1,0 +1,13 @@
+\select@language {english}
+\contentsline {chapter}{\numberline {1}Introduction}{1}{chapter.1}
+\contentsline {chapter}{\numberline {2}Input and Output}{3}{chapter.2}
+\contentsline {chapter}{\numberline {3}Starting Options}{5}{chapter.3}
+\contentsline {section}{\numberline {3.1}Optional Parameters}{5}{section.3.1}
+\contentsline {chapter}{\numberline {4}Modules}{7}{chapter.4}
+\contentsline {section}{\numberline {4.1}schrodinger.py}{7}{section.4.1}
+\contentsline {section}{\numberline {4.2}schrodinger\_io.py}{7}{section.4.2}
+\contentsline {section}{\numberline {4.3}schrodinger\_solver.py}{7}{section.4.3}
+\contentsline {section}{\numberline {4.4}schrodinger\_visualize.py}{8}{section.4.4}
+\contentsline {section}{\numberline {4.5}test\_schrodinger\_solver.py}{8}{section.4.5}
+\contentsline {chapter}{\numberline {5}Scientific Notes}{11}{chapter.5}
+\contentsline {chapter}{Python Module Index}{13}{section*.11}

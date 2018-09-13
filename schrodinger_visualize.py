@@ -72,7 +72,7 @@ def show(stretchfactor=1, split=False, markersize=10):
         #plot uncertainty
         plt.plot(deviation_x[ii], off*energies[ii], "m+", ms=markersize)
 
-    plt.xlabel("$\sigma_\mathrm{x}$ [Bohr]")
+    plt.xlabel(r"$\sigma_\mathrm{x}$ [Bohr]")
     plt.title(r"Standard Deviation $\sigma_\mathrm{x}$")
     plt.savefig("schrodinger.pdf")
     

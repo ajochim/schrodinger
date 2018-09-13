@@ -1,7 +1,7 @@
-A small program that solves the onedimensional 
-Schrödinger equation for arbitrary potentials,
-written in Python. 
+A program that solves the 1d schrodinger equation. It reads a file schrodinger.inp that specifies a given potential and calculates energies, wavefunctions, expectation values and standard deviation. All data is plotted afterwards and saved to schrodinger.pdf.
 
-Use 
-docs/_build/html/index.html
-for documentation.
+
+For documentation read: 
+
+schrodinger_documentation.html (recommended)
+schrodinger_documentation.pdf  (not recommended)
