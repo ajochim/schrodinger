@@ -9,8 +9,15 @@ from scipy.interpolate import CubicSpline
 
 def interpolate(obtained_input):
     """Interpolation routine, that interpolates the given potential data with
-       a specified interpolation method"""
+    a specified interpolation method
 
+    Args:
+        obtained_input (dict): obtained input of schrodinger_io.read_input()
+
+    Return:
+        interppot (numpy array): contains interpolated potential
+
+    """
     intertype = obtained_input["intertype"]
     xmin = obtained_input["xmin"]
     xmax = obtained_input["xmax"]
@@ -49,9 +56,15 @@ def interpolate(obtained_input):
     return interppot
 
 def solve1d(obtained_input, pot):
-    """Solves the 1D schrodinger equation with potential/parameters given
-       by the input file schrodinger.inp and returns dictionary"""
+    """Solves the discretized 1D schrodinger equation
 
+    Args:
+        obtained_input (dict): obtained input of schrodinger_io.read_input()
+        pot (numpy array): contains potential
+
+    Returns:
+        data (dict): calculated data; potential, energies, wavefuncs, expvalues
+    """
     mass = obtained_input["mass"]
     npoint = obtained_input["npoint"]
     firsteigv = obtained_input["firsteigv"]
