@@ -87,20 +87,31 @@ def solve1d(obtained_input, pot):
     # corresponding to the eigenvalue eiva[i] is the column eive[:,i]
     eiva, eive = eigh_tridiagonal(maindiag, ludiag, select='a', select_range=None)
 
-    # reshape wavefunctions
+    # reshape wavefunctions, normfactor is sqrt of delta
     wavefunctions = np.hstack((xinterp.reshape((-1, 1)), eive))
+    wavefunctions[:, 1:] = wavefunctions[:, 1:]/np.sqrt(delta)
 
-    #expectation values and uncertainties
+    # norm check
+    _NORM_TOLERANCE = 1e-3
+    norm = np.zeros(int(lasteigv - firsteigv) + 1)
+    for ii in range(int(lasteigv - firsteigv) + 1):
+        norm[ii] = np.sum(delta*np.abs(wavefunctions[:, ii + 1])**2)
+        if norm[ii] > 1 + _NORM_TOLERANCE or norm[ii] < 1 - _NORM_TOLERANCE:
+            print("Warning!: Norm of wavefunction", str(ii + 1), "is not 1, but",
+                  str(norm[ii]))
+    #print(norm)
+
+    # expectation values and uncertainties
     expectation_values = np.zeros(int(lasteigv - firsteigv + 1))
     expectation_values_squared = np.zeros(int(lasteigv - firsteigv + 1))
     deviation_x = np.zeros(int(lasteigv - firsteigv + 1))
 
-    for ii in range(int(lasteigv-firsteigv + 1)):
+    for ii in range(int(lasteigv - firsteigv + 1)):
         expectation_values[ii] = np.sum(xinterp[:]*((eive[:, ii])**2))
         expectation_values_squared[ii] = np.sum(((xinterp[:])**2)*(eive[:, ii])**2)
         deviation_x[ii] = np.sqrt(expectation_values_squared[ii] - (expectation_values[ii])**2)
 
-    #reshape expectationvalues and deviation
+    # reshape expectationvalues and deviation
     expvalues = np.hstack((expectation_values.reshape((-1, 1)), deviation_x.reshape((-1, 1))))
 
     data = {} #dicitionary for all calculated values
